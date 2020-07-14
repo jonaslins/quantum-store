@@ -10,12 +10,16 @@ import static org.hamcrest.CoreMatchers.is;
 public class ProductResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
+    public void shouldGetProductById() {
         given()
-          .when().get("/hello")
+          .pathParam("id", "myProductId")
+          .when().get("/products/{id}")
           .then()
              .statusCode(200)
-             .body(is("hello"));
+             .body("id", is("myProductId"),
+                     "name", is("Headphone Plus"),
+                     "price", is(50)
+             );
     }
 
 }
