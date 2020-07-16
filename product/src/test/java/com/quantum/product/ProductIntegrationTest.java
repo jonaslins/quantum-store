@@ -18,6 +18,11 @@ import static org.hamcrest.Matchers.not;
 @QuarkusTestResource(MongoContainerResource.class)
 public class ProductIntegrationTest {
 
+    @BeforeEach
+    public void setup(){
+        Product.deleteAll();
+    }
+
     @Test
     public void shouldCreateProduct() {
         Product product = new Product(
