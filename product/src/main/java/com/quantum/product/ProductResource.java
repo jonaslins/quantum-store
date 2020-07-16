@@ -5,15 +5,24 @@ import org.bson.types.ObjectId;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProductResource {
 
+    @POST
+    public Response createProduct(Product product) {
+        product.persist();
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(product)
+                .build();
+    }
+
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Product getProductById(@PathParam("id") String id) {
         return Product.findById(new ObjectId(id));
     }
