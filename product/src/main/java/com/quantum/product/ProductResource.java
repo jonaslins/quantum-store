@@ -36,4 +36,11 @@ public class ProductResource {
         product.update();
         return product;
     }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteProductById(@PathParam("id") String id) {
+        Product.deleteById(new ObjectId(id));
+    }
+
 }

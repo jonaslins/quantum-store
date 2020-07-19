@@ -7,6 +7,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
@@ -35,7 +36,7 @@ public class ProductIntegrationTest {
                 .body(product)
                 .when().post("/products")
                 .then()
-                .statusCode(201)
+                .statusCode(Response.Status.CREATED.getStatusCode())
                 .body("id", not(emptyString()),
                         "name", is(product.getName()),
                         "description", is(product.getDescription()),
@@ -54,7 +55,7 @@ public class ProductIntegrationTest {
                 .pathParam("id", product.getId().toString())
                 .when().get("/products/{id}")
                 .then()
-                .statusCode(200)
+                .statusCode(Response.Status.OK.getStatusCode())
                 .body("id", is(product.getId().toString()),
                         "name", is(product.getName()),
                         "description", is(product.getDescription()),
@@ -76,12 +77,27 @@ public class ProductIntegrationTest {
                 .pathParam("id", product.getId().toString())
                 .when().put("/products/{id}")
                 .then()
-                .statusCode(200)
+                .statusCode(Response.Status.OK.getStatusCode())
                 .body("id", is(product.getId().toString()),
                         "name", is("New headphone"),
                         "description", is("New description"),
                         "price", is(50)
                 );
+    }
+
+    @Test
+    public void shouldDeleteProductById() {
+        Product product = new Product(
+                "Headphone Plus",
+                "The best headphone for gaming",
+                new BigDecimal(50));
+        product.persist();
+
+        given()
+                .pathParam("id", product.getId().toString())
+                .when().delete("/products/{id}")
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
 
 }
