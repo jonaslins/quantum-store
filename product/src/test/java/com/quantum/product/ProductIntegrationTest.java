@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.not;
 public class ProductIntegrationTest {
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         Product.deleteAll();
     }
 
@@ -58,6 +58,28 @@ public class ProductIntegrationTest {
                 .body("id", is(product.getId().toString()),
                         "name", is(product.getName()),
                         "description", is(product.getDescription()),
+                        "price", is(50)
+                );
+    }
+
+    @Test
+    public void shouldUpdateProductById() {
+        Product product = new Product(
+                "Headphone Plus",
+                "The best headphone for gaming",
+                new BigDecimal(50));
+        product.persist();
+
+        given()
+                .contentType(ContentType.JSON)
+                .body("{ \"name\": \"New headphone\", \"description\": \"New description\" }")
+                .pathParam("id", product.getId().toString())
+                .when().put("/products/{id}")
+                .then()
+                .statusCode(200)
+                .body("id", is(product.getId().toString()),
+                        "name", is("New headphone"),
+                        "description", is("New description"),
                         "price", is(50)
                 );
     }

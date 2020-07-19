@@ -26,4 +26,14 @@ public class ProductResource {
     public Product getProductById(@PathParam("id") String id) {
         return Product.findById(new ObjectId(id));
     }
+
+    @PUT
+    @Path("/{id}")
+    public Product updateProductById(@PathParam("id") String id, Product newProductInfo) {
+        Product product = Product.findById(new ObjectId(id));
+        product.setName(newProductInfo.getName());
+        product.setDescription(newProductInfo.getDescription());
+        product.update();
+        return product;
+    }
 }
