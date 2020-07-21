@@ -1,0 +1,37 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:4.2.6
+    ports:
+      - "27017:27017"
+      - "3000:3000"
+    command: mongod --replSet rs0
+  zookeeper:
+    image: debezium/zookeeper:1.2.1.Final
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+  kafka:
+    image: debezium/kafka:1.2.1.Final
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    environment:
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+  connect:
+    image: debezium/connect:1.2.1.Final
+    ports:
+      - 8083:8083
+    links:
+      - kafka
+      - mongodb
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+
+#  curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @product/debezium-connector-config.json

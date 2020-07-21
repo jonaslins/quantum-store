@@ -1,10 +1,12 @@
 package com.quantum.product.domain;
 
+import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import org.bson.types.ObjectId;
 
 import java.math.BigDecimal;
 
+@MongoEntity(collection="product")
 public class Product extends PanacheMongoEntity {
 
     private String name;
