@@ -20,7 +20,7 @@ mongo -u admin -p admin --authenticationDatabase admin localhost:27017/quantum-p
         { name : 'car battery', description: '12V car battery', price : 8.1 },
         { name : '12-pack drill bits', description: '12-pack of drill bits with sizes ranging from #40 to #3', price : 0.8 },
         { name : 'hammer', description: "12oz carpenter's hammer", price : 0.75 },
-        { name : 'hammer', description: "14oz carpenter's hammer", price : 0.875) },
+        { name : 'hammer', description: "14oz carpenter's hammer", price : 0.875 },
         { name : 'hammer', description: "16oz carpenter's hammer", price : 1.0 },
         { name : 'rocks', description: 'box of assorted rocks', price : 5.3 },
         { name : 'jacket', description: 'water resistent black wind breaker', price : 0.1 },
